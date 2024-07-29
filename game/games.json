@@ -1,0 +1,36 @@
+{
+    "games": {
+        "Fortnite": {
+            "path": "/static/images/Fortnite.jpg",
+            "bg": "purple"
+        },
+        "Valorant": {
+            "path": "/static/images/Valorant.jpg",
+            "bg": "red"
+        },
+        "DOTA 2": {
+            "path": "/static/images/Dota2.webp",
+            "bg": "blue"
+        },
+        "CS:GO": {
+            "path": "/static/images/CSGO.jpg",
+            "bg": "brown"
+        },
+        "Apex Legends": {
+            "path": "/static/images/ApexLegends.jpg",
+            "bg": "red"
+        },
+        "Among US": {
+            "path": "/static/images/AmongUs.jpg",
+            "bg": "grey"
+        },
+        "Rocket League": {
+            "path": "/static/images/RocketLeague.avif",
+            "bg": "green"
+        },
+        "League of Legends": {
+            "path": "/static/images/LeagueOfLegends.jpg",
+            "bg": "green"
+        }
+    }
+}

@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Room - {{room_id}}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap">
+    <style>
+        body {
+            font-family: 'Press Start 2P', sans-serif;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Player Names and Scores */
+        #players-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .player {
+            font-size: 2em;
+        }
+
+        /* Game Start and Reveal Animations */
+        #game-start-animation,
+        #game-reveal-animation {
+            height: 200px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #444;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        /* Buttons */
+        .button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        body {
+            background-color: white;
+            /* Light mode background color */
+            transition: background-color 0.5s ease-in-out;
+            margin: 0;
+            padding: 0;
+        }
+
+        body.dark-mode {
+            background-color: black;
+            /* Dark mode background color */
+        }
+
+        .fade-in-out {
+            /* Set your desired width */
+            /* height: 100px; */
+            /* Set your desired height */
+            background-color: transparent;
+            /* You can set a background color if needed */
+            background-image: url('/static/images/AmongUs.jpg');
+            background-size: cover;
+            /* Adjust background size to cover the element */
+            background-repeat: no-repeat;
+            /* Prevent image repetition */
+            animation: fade 4s infinite;
+        }
+
+        @keyframes fade {
+            0% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .wait {
+            height: 100svh;
+            padding: 25px 50px;
+            text-shadow: 5px 5px 10px black;
+            font-size: 35px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: aliceblue;
+            font-weight: bold;
+            text-align: start;
+        }
+    </style>
+</head>
+
+<body class="dark-mode" data-bs-theme="dark">
+    <div id="replace">
+        <div class="fade-in-out wait change">
+            <div style="font-family: 'Press Start 2P', sans-serif;">
+                <div id="status">
+                    Waiting for other players...
+                </div>
+                <div>
+                    Room id :- {{room_id}}
+                </div>
+                <audio autoplay loop>
+                    <source src="/static/images/loading.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <bgsound loop src="/static/images/loading.mp3" />
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content overflow-hidden">
+                <div class="modal-body">
+                    <div id="game-choose">
+                        <div id="cards">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="avatarModal" tabindex="-1" role="dialog" aria-labelledby="avatarModal"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content overflow-hidden">
+                <div class="modal-body">
+                    <div class="container-fluid mb-3">
+                        <div class="modal-title row">
+                            <div class="col-md-12 h2 d-flex justify-content-center py-2 rounded"
+                                style="background-color: #333;">
+                                Choose your avatar
+                            </div>
+                        </div>
+                    </div>
+                    <div id="avatar-choose" class="container-fluid">
+                        <div id="cards" class="avatar-choose row">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="declareWinnerModal" tabindex="-1" role="dialog"
+        aria-labelledby="declareWinnerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content overflow-hidden">
+                <div class="modal-body">
+                    <div id="game-choose">
+                        <div id="cards">
+                            <div class="card" data-color="blue" id="player_1_button_modal" onclick="b">
+                                <img class="img-fluid pimg card-front-image card-image player_1_img_modal"
+                                    src="/static/avatars/4.jpg" alt="" width="300px" height="300px"
+                                    id="player_1_img_modal">
+                                <div class="card-faders">
+                                    <img class="card-fader card-image player_1_img_modal" src="${game.path}" />
+                                    <img class="card-fader card-image player_1_img_modal" src="${game.path}" />
+                                    <img class="card-fader card-image player_1_img_modal" src="${game.path}" />
+                                    <img class="card-fader card-image player_1_img_modal" src="${game.path}" />
+                                    <img class="card-fader card-image player_1_img_modal" src="${game.path}" />
+                                    <img class="card-fader card-image player_1_img_modal" src="${game.path}" />
+                                    <img class="card-fader card-image player_1_img_modal" src="${game.path}" />
+                                    <img class="card-fader card-image player_1_img_modal" src="${game.path}" />
+                                </div>
+                                <div class="h3 text-center py-2" id="player_1_name_modal">Bhavin</div>
+                            </div>
+
+                            <div class="card" data-color="red" id="player_2_button_modal" onclick="a">
+                                <img class="img-fluid pimg card-front-image card-image player_2_img_modal"
+                                    src="/static/avatars/4.jpg" alt="" width="300px" height="300px"
+                                    id="player_2_img_modal">
+                                <div class="card-faders">
+                                    <img class="card-fader card-image player_2_img_modal" src="${game.path}" />
+                                    <img class="card-fader card-image player_2_img_modal" src="${game.path}" />
+                                    <img class="card-fader card-image player_2_img_modal" src="${game.path}" />
+                                    <img class="card-fader card-image player_2_img_modal" src="${game.path}" />
+                                    <img class="card-fader card-image player_2_img_modal" src="${game.path}" />
+                                    <img class="card-fader card-image player_2_img_modal" src="${game.path}" />
+                                    <img class="card-fader card-image player_2_img_modal" src="${game.path}" />
+                                    <img class="card-fader card-image player_2_img_modal" src="${game.path}" />
+                                </div>
+                                <div class="h3 text-center py-2" id="player_2_name_modal">Bhavin</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+        crossorigin="anonymous"></script>
+    <script>
+        let id = "{{room_id}}";
+        let my_id;
+        let opponent_id;
+        let round = 1;
+        let waitForChooseGameByOtherPlayer;
+        let waitForDeclareWinnerByOtherPlayer;
+        let youWin = new Audio('/static/audio/you-win.mp3');
+        let youLose = new Audio('/static/audio/you-lose.mp3');
+        let roundAudio = new Audio('/static/audio/round.mp3');
+        let num = {};
+        for (let i = 1; i < 10; i++) {
+            num[i] = new Audio(`/static/audio/${i}.mp3`);
+        }
+        const images = ['AmongUs.jpg', 'ApexLegends.jpg', 'CSGO.jpg', 'Dota2.webp', 'FallGuys.avif', 'Fortnite.jpg', 'LeagueOfLegends.jpg', 'RocketLeague.avif', 'Valorant.jpg']
+        let n = 0;
+
+        function ch() {
+            if (n === images.length - 1) {
+                n = 0;
+            } else {
+                n++;
+            }
+            document.querySelector('.fade-in-out').style.backgroundImage = "url('/static/images/" + images[n] + "')";
+        }
+        const check_declare_winner = async () => {
+            const response = await fetch('/get-round-data?id=' + id);
+            const data = await response.json();
+
+            if (data.success) {
+                if (data.round_data[round - 1].winner !== null) {
+                    if (data.game.winner) {
+                        document.getElementById("choose-game").style = "display:none;";
+                        document.getElementById("wait-for-choose").style = "display:block;";
+                        document.getElementById("wait-for-choose").innerText = `Game Winner - ${data.game.winner.winner_name}`;
+                        document.getElementById("wait-for-choose").style = "color: gold; text-shadow: 1px 1px 0 red";
+                        document.getElementById("player_1_points").innerText = data.player_info[my_id].points;
+                        document.getElementById("player_2_points").innerText = data.player_info[opponent_id].points;
+                        if (data.game.winner.winner_id === my_id) {
+                            document.getElementById("player_1_points").style = "color: gold; text-shadow: 1px 1px 0 red";
+                            document.getElementById("player_1_name").style = "color: gold; text-shadow: 1px 1px 0 red";
+                            document.getElementById("player_1_img").style = "border: 1px solid gold";
+                            youWin.play();
+                        } else if (data.game.winner.winner_id === opponent_id) {
+                            document.getElementById("player_2_points").style = "color: gold; text-shadow: 1px 1px 0 red";
+                            document.getElementById("player_2_name").style = "color: gold; text-shadow: 1px 1px 0 red";
+                            document.getElementById("player_2_img").style = "border: 1px solid gold";
+                            youLose.play();
+                        }
+                        clearInterval(waitForDeclareWinnerByOtherPlayer);
+                        return
+                    }
+                    document.getElementById("choose-game").style = "display:none;";
+                    document.getElementById("wait-for-choose").style = "display:block;";
+                    document.getElementById("wait-for-choose").innerText = `Round ${round} Winner - ${data.round_data[round - 1].winner_name}`;
+                    document.getElementById("player_1_points").innerText = data.player_info[my_id].points;
+                    document.getElementById("player_2_points").innerText = data.player_info[opponent_id].points;
+                    [...document.getElementsByClassName("declare-winner")]?.map((element) => element.style = "display: none");
+                    $('#declareWinnerModal').modal('hide');
+                    clearInterval(waitForDeclareWinnerByOtherPlayer);
+
+                    // restart the game for next round
+                    setTimeout(() => {
+                        if (data.round_data[round - 1].creator === my_id) {
+                            document.getElementById("wait-for-choose").innerText = 'Waiting for other player to choose a game';
+                        }
+                        else {
+                            document.getElementById("choose-game").style = "display:block;";
+                            document.getElementById("wait-for-choose").style = "display:none;";
+                        }
+                        round += 1;
+                        roundAudio.play();
+                        setTimeout(() => { num[round].play() }, 800);
+                        document.getElementById("round_num").innerText = round;
+                        waitForChooseGameByOtherPlayer = setInterval(check_game_choose, 2000);
+                    }, 4000)
+                }
+            }
+        }
+
+        const check_game_choose = async () => {
+            const response = await fetch('/get-round-data?id=' + id);
+            const data = await response.json();
+            if (document.getElementById("player_1_img").src !== data.player_info[my_id].img) {
+                document.getElementById("player_1_img").src = "/static/avatars/" + data.player_info[my_id].img;
+                [...document.getElementsByClassName("player_1_img_modal")].map((element) => element.src = "/static/avatars/" + data.player_info[my_id].img);
+            }
+            if (document.getElementById("player_2_img").src !== data.player_info[opponent_id].img) {
+                document.getElementById("player_2_img").src = "/static/avatars/" + data.player_info[opponent_id].img;
+                [...document.getElementsByClassName("player_2_img_modal")].map((element) => element.src = "/static/avatars/" + data.player_info[opponent_id].img);
+            }
+            if (data.success && data.round_data.length === round) {
+                document.getElementById("wait-for-choose").innerText = "Round " + round + " - " + data.round_data[round - 1].name;
+                clearInterval(waitForChooseGameByOtherPlayer);
+                $('#exampleModal').modal('hide');
+                waitForDeclareWinnerByOtherPlayer = setInterval(check_declare_winner, 2000)
+            }
+        }
+
+        async function sendchosenavatar(avatarname) {
+            const response = await fetch("/chosen-avatar", {
+                "method": "POST",
+                "headers": {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                "body": new URLSearchParams({
+                    "avatar": avatarname,
+                    "room_code": id
+                })
+            })
+            const data = await response.json();
+            if (data.success) {
+                $('#avatarModal').modal('hide');
+            }
+        }
+
+        async function check(id) {
+            let res = await fetch("/check/" + id);
+            let data = await res.json();
+            if (data.length > 1) {
+                document.getElementById("status").innerText = "Players joined. Starting Game...";
+                let resp = await fetch("/get-game-ui");
+                let datah = await resp.json();
+                let resp2 = await fetch("/get-game-data?id=" + id);
+                let datah2 = await resp2.json();
+                let respAvatars = await fetch("/get-avatars");
+                let { data: dataAvatars } = await respAvatars.json();
+                clearInterval(wait2);
+                clearInterval(wait);
+                document.getElementsByTagName("style")[0].innerHTML = datah.style;
+                document.getElementById("replace").innerHTML = datah.body;
+                document.getElementById("player_1_img").src = "/static/avatars/" + datah2.room_data.player_info[datah2.my_id].img;
+                document.getElementById("player_1_name").innerText = datah2.room_data.player_info[datah2.my_id].name;
+                [...document.getElementsByClassName("player_1_img_modal")].map((element) => element.src = "/static/avatars/" + datah2.room_data.player_info[datah2.my_id].img)
+                document.getElementById("player_1_name_modal").innerText = datah2.room_data.player_info[datah2.my_id].name;
+                document.getElementById("player_1_button_modal").onclick = function () { sendchosenwinner(datah2.my_id); };
+                my_id = datah2.my_id;
+                let index = datah2.room_data.players.indexOf(datah2.my_id);
+                if (index !== -1) {
+                    datah2.room_data.players.splice(index, 1);
+                }
+                opponent_id = datah2.room_data.players[0];
+                document.getElementById("player_2_img").src = "/static/avatars/" + datah2.room_data.player_info[opponent_id].img;
+                document.getElementById("player_2_name").innerText = datah2.room_data.player_info[opponent_id].name;
+                [...document.getElementsByClassName("player_2_img_modal")].map((element) => element.src = "/static/avatars/" + datah2.room_data.player_info[opponent_id].img);
+                document.getElementById("player_2_name_modal").innerText = datah2.room_data.player_info[opponent_id].name;
+                document.getElementById("player_2_button_modal").onclick = function () { sendchosenwinner(opponent_id); };
+                if (datah2.creator.id === datah2.my_id) {
+                    document.getElementById("choose-game").style = "display:block;";
+                    document.getElementById("wait-for-choose").style = "display:none;"
+                }
+                else {
+                    document.getElementById("wait-for-choose").style = "display:block;";
+                    document.getElementById("choose-game").style = "display:none;";
+                }
+                document.getElementById("choose-game").style = datah2.creator.id === datah2.my_id ? document.getElementById("choose-game").style : "display:none;";
+
+                for (let i = 0; i < dataAvatars.length; i++) {
+                    document.getElementsByClassName("avatar-choose")[0].innerHTML += `
+                    <div class="col-lg-4 mb-3 d-flex justify-content-center">
+                        <div class="card" data-color="${dataAvatars[i].bg}" onclick="sendchosenavatar('${dataAvatars[i].name}')">
+                            <img class="card-front-image card-image" src="${dataAvatars[i].path}" />
+                            <div class="card-faders">
+                                <img class="card-fader card-image" src="${dataAvatars[i].path}" />
+                                <img class="card-fader card-image" src="${dataAvatars[i].path}" />
+                                <img class="card-fader card-image" src="${dataAvatars[i].path}" />
+                                <img class="card-fader card-image" src="${dataAvatars[i].path}" />
+                                <img class="card-fader card-image" src="${dataAvatars[i].path}" />
+                                <img class="card-fader card-image" src="${dataAvatars[i].path}" />
+                                <img class="card-fader card-image" src="${dataAvatars[i].path}" />
+                                <img class="card-fader card-image" src="${dataAvatars[i].path}" />
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                }
+
+                roundAudio.play();
+                setTimeout(() => { num[round].play() }, 800);
+                waitForChooseGameByOtherPlayer = setInterval(check_game_choose, 2000);
+                $('#avatarModal').modal('show');
+            }
+        }
+
+        let wait = setInterval(() => check(id), 3000);
+        let wait2 = setInterval(ch, 4000);
+
+        const chooseGame = async () => {
+            const response = await fetch("/choose-game");
+            const data = await response.json();
+            let imgs = data.games.map((game) => {
+                return `
+                <div class="card" data-color="${game.bg}">
+                    <img class="card-front-image card-image" src="${game.path}" />
+                    <div class="card-faders">
+                        <img class="card-fader card-image" src="${game.path}" />
+                        <img class="card-fader card-image" src="${game.path}" />
+                        <img class="card-fader card-image" src="${game.path}" />
+                        <img class="card-fader card-image" src="${game.path}" />
+                        <img class="card-fader card-image" src="${game.path}" />
+                        <img class="card-fader card-image" src="${game.path}" />
+                        <img class="card-fader card-image" src="${game.path}" />
+                        <img class="card-fader card-image" src="${game.path}" />
+                    </div>
+                </div>
+            `})
+            document.getElementById('cards').innerHTML = imgs;
+        }
+        async function sendchosengame(gamename) {
+            const response = await fetch("/chosen-game", {
+                "method": "POST",
+                "headers": {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                "body": new URLSearchParams({
+                    "game": gamename,
+                    "room_code": id
+                })
+            })
+            const data = await response.json();
+            if (data.success) {
+                $('#exampleModal').modal('hide');
+                document.getElementById("choose-game").style = "display:none;";
+                document.getElementById("wait-for-choose").style = "display:block;";
+                document.getElementById("wait-for-choose").innerText = `Round ${round} - ${data.data.game}`;
+                [...document.getElementsByClassName("declare-winner")]?.map((element) => element.style = "display: block")
+            }
+        }
+        async function sendchosenwinner(playerId) {
+            const response = await fetch("/chosen-winner", {
+                "method": "POST",
+                "headers": {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                "body": new URLSearchParams({
+                    "winner_id": playerId,
+                    "room_code": id
+                })
+            })
+            const data = await response.json();
+            if (data.success) {
+                $('#declareWinnerModal').modal('hide');
+                document.getElementById("choose-game").style = "display:none;";
+                document.getElementById("wait-for-choose").style = "display:block;";
+                document.getElementById("wait-for-choose").innerText = `Round ${round} Winner - ${data.data.player_name}`;
+                [...document.getElementsByClassName("declare-winner")]?.map((element) => element.style = "display: none");
+            }
+        }
+        $('#exampleModal').on('show.bs.modal', async function (event) {
+            const response = await fetch("/choose-game");
+            const data = await response.json();
+            let imgs = data.games.map((game) => {
+                return `
+                <div class="card" data-color="${game.bg}" data-name="${game.name}" onclick="sendchosengame('${game.name}')">
+                    <img class="card-front-image card-image" src="${game.path}" />
+                    <div class="card-faders">
+                        <img class="card-fader card-image" src="${game.path}" />
+                        <img class="card-fader card-image" src="${game.path}" />
+                        <img class="card-fader card-image" src="${game.path}" />
+                        <img class="card-fader card-image" src="${game.path}" />
+                        <img class="card-fader card-image" src="${game.path}" />
+                        <img class="card-fader card-image" src="${game.path}" />
+                        <img class="card-fader card-image" src="${game.path}" />
+                        <img class="card-fader card-image" src="${game.path}" />
+                    </div>
+                </div>
+            `})
+            document.getElementById('cards').innerHTML = imgs;
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var recipient = button.data('whatever') // Extract info from data-* attributes
+            var modal = $(this)
+        })
+    </script>
+</body>
+
+</html>

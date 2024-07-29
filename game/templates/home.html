@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Videospiele Olympiade 1-gegen-1</title>
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+
+<body>
+    <style>
+        html,
+        body {
+            /* overflow: hidden; */
+            font-family: "Press Start 2P";
+            color: #FFD700;
+            /* Yellow text color */
+        }
+
+        body {
+            background-image: url('/static/background/bg7.jpg');
+            background-size: cover;
+            background-blend-mode: multiply;
+            margin: 0;
+            /* Remove default margin */
+            padding: 0;
+            /* Remove default padding */
+        }
+        .container-all{
+            min-height: 100vh;
+        }
+
+        /* Custom form styles */
+        form {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            margin: 20px;
+        }
+
+        label {
+            color: #FFD700;
+            /* Yellow label color */
+        }
+
+        input[type="text"] {
+            background-color: #333;
+            /* Dark background color for text input */
+            border: 1px solid #FFD700;
+            /* Yellow border for text input */
+            border-radius: 5px;
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%;
+            color: #FFD700;
+            /* Yellow text color */
+        }
+
+        input[type="submit"] {
+            background-color: #FFD700;
+            /* Yellow background for submit button */
+            color: #000;
+            /* Black text color for submit button */
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #FFA500;
+            /* Orange color on hover */
+        }
+
+        /* Center the form elements */
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /* height: 100vh; */
+        }
+
+        /* Resize the logo image */
+        .logo-img {
+            max-width: 400px;
+            height: auto;
+        }
+
+        /* Styling for headings */
+        h1 {
+            color: #FFD700;
+            font-size: 36px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            /* Add text shadow */
+        }
+
+        h2 {
+            color: #FFD700;
+            font-size: 24px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            /* Add text shadow */
+        }
+
+        .shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Styling for language links */
+        .lang-links a {
+            color: #FFD700;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 18px;
+        }
+
+        .lang-links a:hover {
+            color: #FFA500;
+        }
+
+        @media screen and (max-width: 900px) {
+            .logo-img {
+                max-width: 50%;
+            }
+        }
+    </style>
+    <div class="d-flex align-items-center flex-column container-all" style="flex-grow: 5;">
+        <div class="form-container" style="flex-grow: 10;">
+            <img src="/static/images/Olympiad-Fighter.png" alt="Street Fighter Logo" class="logo-img">
+            <h2>{{home.create_new_game}}</h2>
+            <form action="/create" method="post">
+                <label>{{home.name}}</label>
+                <input type="text" id="player_name" name="player_name" required><br>
+                <input type="submit" value="{{home.create_new_game}}">
+            </form>
+            <h2>{{home.join_game}}</h2>
+            <form action="/join" method="post">
+                <label>{{home.room_code}}</label>
+                <input type="text" id="room_code" name="room_code" required><br>
+                <label>{{home.name}}</label>
+                <input type="text" id="player_name" name="player_name" required><br>
+                <input type="submit" value="{{home.enter_game}}">
+            </form>
+        </div>
+
+        <div class="text-center mt-4 lang-links" style="flex-grow: 1;">
+            <a href="/lang?name=german" class="shadow">German</a>
+            <a href="/lang?name=english" class="shadow">English</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

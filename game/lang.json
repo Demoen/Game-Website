@@ -1,0 +1,20 @@
+{
+    "home": {
+        "english": {
+            "welcome": "Welcome to the Video Games Olympiad in 1v1 format!",
+            "create_new_game": "Create new game",
+            "name": "Your name:",
+            "join_game": "Join a game",
+            "room_code": "Room code:",
+            "enter_game": "Enter Game"
+        },
+        "german": {
+            "welcome": "Willkommen zur Videospiele Olympiade im 1-gegen-1 Format!",
+            "create_new_game": "Neues Spiel erstellen",
+            "name": "Ihr Name:",
+            "join_game": "Einem Spiel beitreten",
+            "room_code": "Raum-Code:",
+            "enter_game": "Spiel beitreten"
+        }
+    }
+}

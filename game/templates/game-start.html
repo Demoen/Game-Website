@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="styles.css">
+  <title>Spiel</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    /* General Styling */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    /* Player Names and Scores */
+    #players-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px;
+      animation: fadeIn 1s ease-in-out;
+    }
+    
+    .player {
+      font-size: 2em;
+    }
+
+    /* Game Start and Reveal Animations */
+    #game-start-animation, #game-reveal-animation {
+      height: 200px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .modal-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #444;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    /* Buttons */
+    .button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="game-start-animation">
+    <!-- JavaScript can populate this div with the animation -->
+  </div>
+
+  <h1>Spiel läuft... (Runde {{ round_number }})</h1>
+  <h2>Raum-Code: {{ room_code }}</h2>
+
+  <div id="players-container">
+    <div class="player">Player 1: {{ players['Player1'] }} Points</div>
+    <div class="player">Player 2: {{ players['Player2'] }} Points</div>
+  </div>
+
+  <div id="game-reveal-animation">
+    {% if game_choice %}
+      Aktuelles Spiel: {{ game_choice }}
+    {% endif %}
+  </div>
+
+  <!-- Buttons to Open Modals -->
+  <button id="game-choice-button" class="button">Choose Game</button>
+  <button id="winner-declaration-button" class="button">Declare Winner</button>
+
+  <!-- Game Choice Modal -->
+  <div id="gameChoiceModal" class="modal">
+    <div class="modal-content">
+      <h3>Wähle ein Spiel</h3>
+      <select id="game-choice">
+        {% for game in games %}
+          <option value="{{ game }}">{{ game }}</option>
+        {% endfor %}
+      </select>
+      <button class="button" id="submit-game-choice">Wählen</button>
+    </div>
+  </div>
+
+  <!-- Winner Declaration Modal -->
+  <div id="winnerDeclarationModal" class="modal">
+    <div class="modal-content">
+      <h3>Erkläre den Gewinner</h3>
+      <select id="winner">
+        {% for player in players.keys() %}
+          <option value="{{ player }}">{{ player }}</option>
+        {% endfor %}
+      </select>
+      <button class="button" id="declare-winner">Erklären</button>
+    </div>
+  </div>
+
+  <script>
+
+  // When the "Choose Game" button is clicked
+  $("#submit-game-choice").click(function() {
+    // Fetch the selected game from the dropdown
+    let selectedGame = $("#game-choice").val();
+
+    // Prepare the POST data
+    let postData = {
+      'action_type': 'choose_game',
+      'game_choice': selectedGame
+    };
+
+    // Send an AJAX POST request to the server
+    $.ajax({
+      type: "POST",
+      url: "/game/" + roomCode,  // Replace 'roomCode' with the actual room code variable you're using
+      data: JSON.stringify(postData),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(response) {
+        // Handle success (you can close the modal here or update the UI)
+        console.log("Game selected successfully");
+      },
+      error: function(err) {
+        // Handle error
+        console.error("Error in game selection:", err);
+      }
+    });
+  });
+
+</script>
+  <style>
+    /* General Styling */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    /* Player Names and Scores */
+    #players-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px;
+      animation: fadeIn 1s ease-in-out;
+    }
+    
+    .player {
+      font-size: 2em;
+    }
+
+    /* Game Start and Reveal Animations */
+    #game-start-animation, #game-reveal-animation {
+      height: 200px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .modal-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #444;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    /* Buttons */
+    .button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="game-start-animation">
+    <!-- JavaScript can populate this div with the animation -->
+  </div>
+
+  <h1>Spiel läuft... (Runde {{ round_number }})</h1>
+  <h2>Raum-Code: {{ room_code }}</h2>
+
+  <div id="players-container">
+    <div class="player">Player 1: {{ players['Player1'] }} Points</div>
+    <div class="player">Player 2: {{ players['Player2'] }} Points</div>
+  </div>
+
+  <div id="game-reveal-animation">
+    {% if game_choice %}
+      Aktuelles Spiel: {{ game_choice }}
+    {% endif %}
+  </div>
+
+  <!-- Buttons to Open Modals -->
+  <button id="game-choice-button" class="button">Choose Game</button>
+  <button id="winner-declaration-button" class="button">Declare Winner</button>
+
+  <!-- Game Choice Modal -->
+  <div id="gameChoiceModal" class="modal">
+    <div class="modal-content">
+      <h3>Wähle ein Spiel</h3>
+      <select id="game-choice">
+        {% for game in games %}
+          <option value="{{ game }}">{{ game }}</option>
+        {% endfor %}
+      </select>
+      <button class="button" id="submit-game-choice">Wählen</button>
+    </div>
+  </div>
+
+  <!-- Winner Declaration Modal -->
+  <div id="winnerDeclarationModal" class="modal">
+    <div class="modal-content">
+      <h3>Erkläre den Gewinner</h3>
+      <select id="winner">
+        {% for player in players.keys() %}
+          <option value="{{ player }}">{{ player }}</option>
+        {% endfor %}
+      </select>
+      <button class="button" id="declare-winner">Erklären</button>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+      let roomCode = "{{ room_code }}";
+      let currentChooser = "{{ current_chooser }}";
+
+      function openModal(modalId) {
+        $("#" + modalId).show();
+      }
+
+      function closeModal(modalId) {
+        $("#" + modalId).hide();
+      }
+
+      function submitGameChoice() {
+        let selectedGame = $("#game-choice").val();
+        $.ajax({
+          url: "/game/" + roomCode,
+          method: "POST",
+          data: {
+            chooser: currentChooser,
+            action_type: "choose_game",
+            game_choice: selectedGame
+          },
+          success: function(response) {
+            if (response.status === "success") {
+              closeModal("gameChoiceModal");
+            }
+          },
+          error: function(error) {
+            console.log(error);
+          }
+        });
+      }
+
+      function declareWinner() {
+        let winner = $("#winner").val();
+        $.ajax({
+          url: "/game/" + roomCode,
+          method: "POST",
+          data: {
+            chooser: currentChooser,
+            action_type: "declare_winner",
+            winner: winner
+          },
+          success: function(response) {
+            if (response.status === "success") {
+              closeModal("winnerDeclarationModal");
+            }
+          },
+          error: function(error) {
+            console.log(error);
+          }
+        });
+      }
+
+      // Attach event handlers
+      $("#game-choice-button").click(function() {
+        openModal("gameChoiceModal");
+      });
+
+      $("#winner-declaration-button").click(function() {
+        openModal("winnerDeclarationModal");
+      });
+
+      $("#submit-game-choice").click(function() {
+        submitGameChoice();
+      });
+
+      $("#declare-winner").click(function() {
+        declareWinner();
+      });
+    });
+  </script>
+</body>
+</html>

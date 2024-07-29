@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap">
+    <title>Home</title>
+    font
+    <style>
+        body {
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 90vh;
+        }
+
+        * {
+            border: 1px solid green;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: rgb(255, 255, 255);
+            font-family: 'Press Start 2P', sans-serif;
+            /* font-size: 60px; */
+        }
+
+        h1 {
+            font-size: 100px;
+            text-shadow: 4px 4px #888888
+        }
+
+        h2 {
+            font-size: 60px;
+            padding: 10px 20px;
+        }
+
+        h3 {
+            font-size: 40px;
+            padding: 0px 30px;
+        }
+
+        .relative {}
+
+        .rel {
+            display: flex;
+            align-items: center;
+
+        }
+
+        /* @keyframes glowing {
+            from {
+                box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #f0f, 0 0 40px #0ff, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+            }
+
+            to {
+                box-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+            }
+        } */
+
+        @keyframes burningText {
+            0% {
+                text-shadow: 0 0 10px rgb(57, 57, 57), 0 0 20px #ff5733, 0 0 30px #ff8f33;
+            }
+
+            50% {
+                text-shadow: 0 0 10px rgb(42, 42, 42), 0 0 20px #ff5733, 0 0 40px #ff8f33;
+            }
+
+            100% {
+                text-shadow: 0 0 10px rgb(53, 53, 53), 0 0 20px #ff5733, 0 0 30px #ff8f33;
+            }
+        }
+
+        h1 {
+            animation: burningText 1s infinite;
+        }
+
+
+        .welcome {
+            position: relative;
+            right: 300px;
+            top: 25px;
+
+        }
+
+        .medal-img {
+            position: absolute;
+            top: 70px;
+            left: -18px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: auto auto;
+            align-items: center;
+        }
+
+        .box {
+            width: 350px;
+            height: 400px;
+            border: 2px solid #c4c4c4;
+            border-style: dotted;
+            border-radius: 10px;
+            margin: 0px 10px;
+            padding: 30px 0px 60px 0px;
+            color: rgba(255, 255, 255, 0.716);
+            font-family: Tan-pearl;
+            cursor: pointer;
+            animation: gl owing 1s ease-in-out infinite alternate;
+            text-align: center;
+        }
+
+
+
+
+        .login-container {
+            display: grid;
+            grid-template-columns: auto auto auto;
+        }
+
+        .fake-box {
+            width: 300px;
+            height: 100px;
+            position: absolute;
+            left: 220px;
+            bottom: 400px;
+            border-top: 1px white solid;
+            border-right: 1px white solid;
+            border-left: 1px white solid;
+            border-bottom: none;
+
+
+        }
+
+        h5 {
+            text-align: center;
+            font-family: 'Press Start 2P', sans-serif;
+        }
+
+        .input {
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            border: 1px #ffffffa9 solid;
+            /* border-radius: 20px; */
+            width: 300px;
+            padding: 10px 20px;
+            margin: 20px 0px;
+            font-family: 'Press Start 2P', sans-serif;
+        }
+
+        .pixelated-button {
+            background-color: #4e4e4e;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 15px;
+            cursor: pointer;
+            outline: none;
+            font-family: 'Press Start 2P', sans-serif;
+        }
+
+        .pixelated-button:hover {
+            background-color: #333;
+            /* Darken the button on hover */
+        }
+
+
+        /* Pixelated effect using a box-shadow */
+        .pixelated-button::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(45deg,
+                    transparent,
+                    transparent 2px,
+                    #fff 2px,
+                    #fff 4px);
+            top: 0;
+            left: 0;
+            opacity: 0.3;
+            /* Adjust opacity as needed */
+            pointer-events: none;
+            z-index: -1;
+        }
+
+
+        /* .create-box {
+            display: flex;
+        } */
+
+        .position-ab-login {
+            position: relative;
+            right: 145px;
+        }
+
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: auto;
+            }
+
+            .welcome {
+                right: 150px;
+            }
+
+            .relative {
+                height: 100vh;
+            }
+
+            .position-ab-login {
+                display: grid;
+                right: 0;
+
+            }
+
+            .login-container {
+                justify-content: center;
+            }
+
+            .create-game {
+                margin: 30px 10px;
+            }
+
+            .fake-box {
+                display: none;
+            }
+
+            .login-container {
+                grid-template-columns: auto;
+            }
+
+            .medal-img {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="">
+
+    <div class="relative">
+        <div class="grid">
+            <div class="rel">
+                <!-- <div class="fire">
+                    <img src="Mahsall.png" class="flame" width="700px" alt="">
+                </div> -->
+                <div class="welcome">
+                    <div>
+                        <h1>Welcome</h1>
+                        <h3>Olympic</h3>
+                        <h2>Games.</h2>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="position-ab-login">
+                <div class="login-container">
+                    <div class="create-game box">
+                        <h5>Create Room</h5>
+                        <form action="/create" method="post" class=".input">
+                            <label for="player_name"></label>
+                            <input class="input" type="text" id="player_name" placeholder="Enter Your Name"
+                                name="player_name" required>
+                            <input type="submit" class="pixelated-button" value="Create">
+                        </form>
+                    </div>
+                    <div class="fake-box"></div>
+
+                    <div class="join-game box">
+                        <h5>Join Room</h5>
+                        <form action="/create" method="post" class="">
+                            <label for="player_name"></label>
+                            <input class="input" type="text" id="player_name" placeholder="Enter Your Name"
+                                name="player_name" required>
+                            <input class="input" type="text" id="player_name" placeholder="Room Code" name="player_name"
+                                required><br>
+                            <input type="submit" class="pixelated-button" value="Join">
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+    </div>
+
+</body>
+
+</html>
