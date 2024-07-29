@@ -82,19 +82,6 @@ Follow these steps to set up the project on your local machine:
 
 2. Open your web browser and navigate to `http://127.0.0.1:5000` to see the home page.
 
-## Screenshots
-
-### Home Page
-![Home Page](screenshots/home.png)
-*The home page displays a list of available games with images and descriptions.*
-
-### Game Start Page
-![Game Start Page](screenshots/game-start.png)
-*The game start page allows users to initiate a new game.*
-
-### Join Game Page
-![Join Game Page](screenshots/join.png)
-*The join game page lets users join an existing game by entering a game code.*
 
 ## Contributing
 
