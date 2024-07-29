@@ -2,7 +2,7 @@
 
 This web application is designed for a gaming community, providing an interface to manage and overview video game competitions. It allows users to track who plays against whom, the games they play, and their scores. The website does not play games itself but offers a comprehensive overview and management of the gaming competitions.
 
-![Alt text](screenshots/Pasted image 20240729133019.png "Home Screen")
+![alt text](screenshots/Pastedimage20240729133019.png)
 
 
 ## Table of Contents
@@ -24,13 +24,11 @@ This web application is designed for a gaming community, providing an interface 
 - **Static Assets**: Includes images, audio, avatars, and backgrounds to enhance the user experience.
 ## Screenshots
 
-![[Pasted image 20240729133131.png]]
+![alt text](screenshots/Pastedimage20240729133131.png)
 
+![alt text](screenshots/Pastedimage20240729133258.png)
 
-![[Pasted image 20240729133258.png]]
-
-![[Pasted image 20240729133337.png]]
-
+![alt text](screenshots/Pastedimage20240729133337.png)
 
 ## Project Structure
 
