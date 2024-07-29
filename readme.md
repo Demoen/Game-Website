@@ -2,7 +2,8 @@
 
 This web application is designed for a gaming community, providing an interface to manage and overview video game competitions. It allows users to track who plays against whom, the games they play, and their scores. The website does not play games itself but offers a comprehensive overview and management of the gaming competitions.
 
-![[Pasted image 20240729133019.png]]
+![Alt text](screenshots/Pasted image 20240729133019.png "Home Screen")
+
 
 ## Table of Contents
 
